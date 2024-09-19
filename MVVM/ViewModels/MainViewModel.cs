@@ -9,31 +9,19 @@ using System.Threading.Tasks;
 
 namespace DependencyInjectionNavigationService.MVVM.ViewModels
 {
-    public class MainViewModel : ViewModelBase
+    public class MainViewModel : NavigationViewModelBase
     {
-		private INavigationService _navigation;
-		public INavigationService Navigation
-		{
-			get => _navigation;
-			set
-			{
-				_navigation = value;
-				OnPropertyChanged();
-			}
-		}
-
+		public INavigationService Navigation { get => _navigationService; }
+        
         public RelayCommand NavigationToOther { get; }
         public RelayCommand NavigationToHome { get; }
 
-        public MainViewModel(INavigationService navigationService)
+        public MainViewModel(INavigationService navigationService) : base(navigationService)
         {
-            _navigation = navigationService;
+            _navigationService.NavigateTo<DefaultViewModel>();
+			NavigationToOther = new RelayCommand(canExecute => _navigationService.NavigateTo<OtherViewModel>());
+            NavigationToHome = new RelayCommand(canExecute => _navigationService.NavigateTo<HomeViewModel>());
 
-			_navigation.NavigateTo<DefaultViewModel>();
-			NavigationToOther = new RelayCommand(canExecute => _navigation.NavigateTo<OtherViewModel>());
-            NavigationToHome = new RelayCommand(canExecute => _navigation.NavigateTo<HomeViewModel>());
-
-			Debug.WriteLine(_navigation != null ? "Initialized!" : "NULLLL");
         }
     }
 }

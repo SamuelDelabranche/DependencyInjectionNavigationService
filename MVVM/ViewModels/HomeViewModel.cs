@@ -8,17 +8,11 @@ using System.Threading.Tasks;
 
 namespace DependencyInjectionNavigationService.MVVM.ViewModels
 {
-    public class HomeViewModel : ViewModelBase
+    public class HomeViewModel : NavigationViewModelBase
     {
-        public static int constructeurNumber { get; set; } = 0;
-        
-        private readonly INavigationService _navigationService;
-
         public RelayCommand NavigateToOther { get; }
-        public HomeViewModel(INavigationService navigationService)
+        public HomeViewModel(INavigationService navigationService) : base(navigationService)
         {
-            constructeurNumber++;
-            _navigationService = navigationService;
             NavigateToOther = new RelayCommand(execute => navigationService.NavigateTo<OtherViewModel>(), canExecute => true);
         }
     }
