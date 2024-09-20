@@ -17,7 +17,7 @@ namespace DependencyInjectionNavigationService.Services
     public class NavigationService : ObservableItem, INavigationService
     {
         private ViewModelBase _currentView;
-        private readonly Func<Type, ViewModelBase> _viewModelFactory;
+        private readonly IViewModelFactory _viewModelFactory;
 
         public ViewModelBase CurrentView
         {
@@ -32,15 +32,14 @@ namespace DependencyInjectionNavigationService.Services
             }
         }
 
-        public NavigationService(Func<Type, ViewModelBase> viewModelFactory)
+        public NavigationService(IViewModelFactory viewModelFactory)
         {
             _viewModelFactory = viewModelFactory;
         }
 
         public void NavigateTo<TViewModel>() where TViewModel : ViewModelBase
         {
-            ViewModelBase viewModel = _viewModelFactory.Invoke(typeof(TViewModel));
-            CurrentView = viewModel;
+            CurrentView = _viewModelFactory.CreateViewModel(typeof(TViewModel));
         }
     }
 

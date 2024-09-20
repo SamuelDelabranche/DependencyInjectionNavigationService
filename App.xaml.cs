@@ -28,9 +28,11 @@ namespace DependencyInjectionNavigationService
             services.AddSingleton<HomeViewModel>();
             services.AddSingleton<OtherViewModel>();
             services.AddSingleton<DefaultViewModel>();
-            services.AddSingleton<INavigationService, NavigationService>();
 
-            services.AddSingleton<Func<Type, ViewModelBase>>(serviceProvider => viewModelType => (ViewModelBase)serviceProvider.GetRequiredService(viewModelType));
+            services.AddSingleton<INavigationService, NavigationService>();
+            services.AddSingleton<IViewModelFactory, ViewModelFactory>();
+
+            //services.AddSingleton<Func<Type, ViewModelBase>>(serviceProvider => viewModelType => (ViewModelBase)serviceProvider.GetRequiredService(viewModelType));
 
             _serviceProvider = services.BuildServiceProvider();
         }
